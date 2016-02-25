@@ -22,9 +22,6 @@ Now, to switch from working on Project A to Project B, I need to invoke three co
 
 Three commands is an inefficient way to do such a simple & regular task. So, I wrote a script, using which I can achieve the above with one command. This was back in September 2015. Since then, I wrote more scripts to easily navigate and move windows in a multi-monitor setup with I3. And yes, it also works with more than two monitors.
 
-# Where
-The project is located at [github.com/sainathadapa/i3-project-focus-workflow](https://github.com/sainathadapa/i3-project-focus-workflow).
-
 # How to install
 1. Install NodeJS, NPM and Coffeescript (`apt-get install nodejs npm coffeescript`)
 2. Clone the project (`git clone git@github.com:sainathadapa/i3-project-focus-workflow.git`)
