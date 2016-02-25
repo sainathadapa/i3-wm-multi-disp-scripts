@@ -28,8 +28,6 @@ Three commands is an inefficient way to do such a simple & regular task. So, I w
 3. `cd ~/.i3/i3-project-focus-workflow/; npm install`
 4. Bind the scripts to shortcut keys in the I3 config file
 
-You can also directly install from [npm](https://www.npmjs.com/package/i3-project-focus-workflow).`npm install i3-project-focus-workflow`
-
 # Terminology
 A project is defined as a set of workspaces, one workspace for each display/monitor available.
 
