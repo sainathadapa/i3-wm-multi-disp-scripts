@@ -24,8 +24,8 @@ Three commands is an inefficient way to do such a simple & regular task. So, I w
 
 # How to install
 1. Install NodeJS, NPM and Coffeescript (`apt-get install nodejs npm coffeescript`)
-2. Clone the project (`git clone git@github.com:sainathadapa/i3-project-focus-workflow.git`)
-3. `cd .i3/i3-project-focus-workflow/; npm install`
+2. Clone the project (`git clone git@github.com:sainathadapa/i3-project-focus-workflow.git ~/.i3/i3-project-focus-workflow`)
+3. `cd ~/.i3/i3-project-focus-workflow/; npm install`
 4. Bind the scripts to shortcut keys in the I3 config file
 
 You can also directly install from [npm](https://www.npmjs.com/package/i3-project-focus-workflow).`npm install i3-project-focus-workflow`
