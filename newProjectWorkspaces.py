@@ -2,6 +2,7 @@
 import subprocess
 import json
 import sys
+from necessaryFuncs import *
 
 proc = subprocess.Popen(['zenity', '--entry', '--title=I3', 
   "--text='Start a new project with the name:'"],
@@ -18,45 +19,13 @@ proc = subprocess.Popen(['i3-msg', '-t', 'get_workspaces'], stdout=subprocess.PI
 proc_out = proc.stdout.read()
 wkList = json.loads(proc_out)
 
-def getListOfOutputs(wkList):
-  outputs_with_duplicates = map(lambda x:x['output'], wkList)
-  return list(set(outputs_with_duplicates))
-
 allOutputs = getListOfOutputs(wkList)
 
-def getWorkspaceNums(wkList):
-  return map(lambda x:x['num'], wkList)
-
-def getValidWorkspaceNums(wkList, num):
-  num = num + 1
-  wkNums = getWorkspaceNums(wkList)
-
-  if len(wkNums) == 0 :
-    return None
-
-  maxWKNum = max(wkNums)
-  fullWKNums = range(0, maxWKNum + 1)
-  goodWKNums = list(set(fullWKNums) - set(wkNums))
-
-  if num <= len(goodWKNums):
-    return [[goodWKNums][i] for i in range(0, num + 1)]
-  else:
-    return goodWKNums + range(maxWKNum + 1, maxWKNum + num + 1 - len(goodWKNums))
-
 newWorkspaceNums = getValidWorkspaceNums(wkList, len(allOutputs))
-
 
 commandToRun = ''
 
 wkNameProjectPart = '★' + projectName + '★'
-
-
-def getWorkspacesOnOutput(wkList, outputName):
-  filteredObj = filter(lambda x:x['output'] == outputName, wkList)
-  return map(lambda x:x['name'], filteredObj)
-
-def getFocusedWK(wkList):
-  return filter(lambda x:x['focused'] == True, wkList)[0]['name']
 
 for i in range(1, len(allOutputs) + 1):
   # 1. find a workspace which is on this output

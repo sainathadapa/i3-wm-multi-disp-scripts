@@ -3,6 +3,7 @@ import subprocess
 import json
 import sys
 import re
+from necessaryFuncs import *
 
 proc = subprocess.Popen(['zenity', '--entry', '--title=I3',
     "--text='Rename current project to:'"],
@@ -19,31 +20,14 @@ proc = subprocess.Popen(['i3-msg', '-t', 'get_workspaces'], stdout=subprocess.PI
 proc_out = proc.stdout.read()
 wkList = json.loads(proc_out)
 
-def getWKNames(wkList):
-    return map(lambda x:x['name'], wkList)
-
 allWKNames = getWKNames(wkList)
 
-def getFocusedWK(wkList):
-    return filter(lambda x:x['focused'] == True, wkList)[0]['name']
-
 currentWK = getFocusedWK(wkList)
-
-def getProjectFromWKName(wkName):
- search_out = re.search(u'^\d+:★(.*)★\d+$', wkName)
- if search_out:
-     return search_out.group(1)
- else:
-     return None
 
 currentProj = getProjectFromWKName(currentWK)
 
 if currentProj is None:
     sys.exit(1)
-
-def getWKNamesFromProj(wkList, projName):
-    wknames = getWKNames(wkList)
-    return filter(lambda x:getProjectFromWKName(x)==projName, wknames)
 
 currentProjWKs = getWKNamesFromProj(wkList, currentProj)
 
