@@ -59,4 +59,4 @@ def getWorkspaceNums(wkList):
   return map(lambda x:x['num'], wkList)
 
 def getOutputForWK(wkList, wkName):
-    return filter(lambda x:x['name'] == wkName)[0]['output']
+    return filter(lambda x:x['name'] == wkName, wkList)[0]['output']
