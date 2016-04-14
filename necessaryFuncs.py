@@ -40,9 +40,22 @@ def getWorkspacesOnOutput(wkList, outputName):
 
 def getListOfProjects(wkList):
   wknames = getWKNames(wkList)
-  out1 = map(getProjectFromWKName, wknames)
-  out2 = filter(lambda x:x != None, out1)
-  return list(set(out2))
+  wknums = getWorkspaceNums(wkList)
+
+  out1 = map(lambda x:getProjectFromWKName(x), wknames)
+  out11 = zip(out1, wknums)
+  out2 = filter(lambda x:x[0] != None, out11)
+  listOfProjects = list(set(map(lambda x:x[0], out2)))
+
+  def f(x):
+    tmp1 = filter(lambda y:y[0]==x, out2)
+    tmp2 = map(lambda y:y[1], tmp1)
+    return min(tmp2)
+  
+  out3 = map(f, listOfProjects)
+  sortedProjects = [x for (y,x) in sorted(zip(out3,listOfProjects))]
+
+  return sortedProjects
 
 def getProjectFromWKName(wkName):
  search_out = re.search(u'^\d+:★(.*)★\d+$', wkName)
