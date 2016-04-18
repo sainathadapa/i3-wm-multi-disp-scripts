@@ -7,7 +7,7 @@ import re
 from necessaryFuncs import *
 
 proc = subprocess.Popen(['zenity', '--entry', '--title=I3',
-    "--text='Rename current project to:'"],
+    "--text=Rename current project to:"],
     stdout=subprocess.PIPE)
 
 projectName = proc.stdout.read()

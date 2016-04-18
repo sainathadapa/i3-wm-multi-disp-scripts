@@ -9,7 +9,7 @@ if (len(sys.argv) > 1):
     projectName = sys.argv[1]
 else:
  proc = subprocess.Popen(['zenity', '--entry', '--title=I3', 
-   "--text='Start a new project with the name:'"],
+   "--text=Start a new project with the name:"],
    stdout=subprocess.PIPE)
  
  projectName = proc.stdout.read()
