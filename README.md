@@ -21,8 +21,9 @@ Now, to switch from working on Project A to Project B, I need to invoke three co
 Three commands is an inefficient way to do such a simple & regular task. So, I wrote a script, using which I can achieve the above with one command. This was back in September 2015. Since then, I wrote more scripts to easily navigate and move windows in a multi-monitor setup with I3. And yes, it also works with more than two monitors.
 
 # How to install
-1. Download the scripts individually or clone the repo
-2. Bind the scripts to shortcut keys in the I3 config file
+1. Install `zenity`, in case if it is not present. This utility is present on most gnome based linux systems. 
+2. Download the scripts individually or clone the repo
+3. Bind the scripts to shortcut keys in the I3 config file
 
 # Terminology
 A project is defined as a set of workspaces, one workspace for each display/monitor available.
@@ -82,15 +83,15 @@ To use the scripts, add these lines to your I3 config:
 
 ``` sh
 # project workflow bindings
-bindsym $mod+Shift+p exec  ~/.3/i3-project-focus-workflow/newProjectWorkspaces.py
-bindsym $mod+p exec ~/.i3/i3-project-focus-workflow/switchNextProject.py
-bindsym $mod+Tab exec ~/.i3/i3-project-focus-workflow/cycleProjectWorkspacesFocus.py
-bindsym $mod+Shift+Tab exec ~/.i3/i3-project-focus-workflow/cycleProjectWorkspacesOutput.py
-bindsym $mod+Control+Tab exec ~/.i3/i3-project-focus-workflow/cycleContainerProjectWorkspaces.py
-bindsym $mod+n exec ~/.i3/i3-project-focus-workflow/renameProject.py
+bindsym $mod+Shift+p     exec python2 ~/.3/i3-project-focus-workflow/newProjectWorkspaces.py
+bindsym $mod+p           exec python2 ~/.i3/i3-project-focus-workflow/switchNextProject.py
+bindsym $mod+Tab         exec python2 ~/.i3/i3-project-focus-workflow/cycleProjectWorkspacesFocus.py
+bindsym $mod+Shift+Tab   exec python2 ~/.i3/i3-project-focus-workflow/cycleProjectWorkspacesOutput.py
+bindsym $mod+Control+Tab exec python2 ~/.i3/i3-project-focus-workflow/cycleContainerProjectWorkspaces.py
+bindsym $mod+n           exec python2 ~/.i3/i3-project-focus-workflow/renameProject.py
 
 # create a initial project on startup with project name 'default'
-exec --no-startup-id ~/.i3/i3-project-focus-workflow/newProjectWorkspaces.py default
+exec --no-startup-id python2 ~/.i3/i3-project-focus-workflow/newProjectWorkspaces.py default
 ```
 
  

@@ -32,11 +32,11 @@ if currentProj is None:
 
 currentProjWKs = getWKNamesFromProj(wkList, currentProj)
 
-newProjWKs = map(lambda x:x.replace(u"★" + currentProj + u"★",
-  u"★" + projectName + u"★"), currentProjWKs)
+newProjWKs = map(lambda x:x.replace(":" + currentProj + ":",
+  ":" + projectName + ":"), currentProjWKs)
 
-parCommand = map(lambda (i,x): u'rename workspace ' +
-        currentProjWKs[i] + u' to ' +
+parCommand = map(lambda (i,x): 'rename workspace ' +
+        currentProjWKs[i] + ' to ' +
         newProjWKs[i] + '; ', enumerate(currentProjWKs))
 
 commandToRun = ['i3-msg', ''.join(parCommand)]

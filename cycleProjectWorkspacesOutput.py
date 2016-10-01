@@ -43,7 +43,7 @@ def temp2(i, x):
 
 parCommToRun = map(lambda (i,x):temp2(i,x), enumerate(currentProjWKs))
 
-commandToRun = [u"i3-msg", u''.join(parCommToRun)]
+commandToRun = ["i3-msg", ''.join(parCommToRun)]
 
 subprocess.call(commandToRun)
 
