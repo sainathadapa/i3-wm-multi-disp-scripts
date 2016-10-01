@@ -35,8 +35,8 @@ visWks = getVisibleWKs(wkList)
 
 wksToMakeVisible = list(set(nxtProjWks) - set(visWks))
 
-parCommToRun = map(lambda x: u'workspace ' + x, wksToMakeVisible)
+parCommToRun = map(lambda x: 'workspace ' + x, wksToMakeVisible)
 
-commandToRun = [u"i3-msg", u'; '.join(parCommToRun)]
+commandToRun = ["i3-msg", '; '.join(parCommToRun)]
 
 subprocess.call(commandToRun)
