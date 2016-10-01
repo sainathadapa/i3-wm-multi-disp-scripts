@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+# encoding: utf-8
 import subprocess
 import json
 import sys
@@ -29,7 +30,7 @@ newWorkspaceNums = getValidWorkspaceNums(wkList, len(allOutputs))
 
 commandToRun = ''
 
-wkNameProjectPart = '★' + projectName + '★'
+wkNameProjectPart = u'★' + projectName + u'★'
 
 for i in range(1, len(allOutputs) + 1):
   # 1. find a workspace which is on this output
