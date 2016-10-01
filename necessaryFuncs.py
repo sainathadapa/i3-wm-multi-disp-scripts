@@ -58,7 +58,7 @@ def getListOfProjects(wkList):
   return sortedProjects
 
 def getProjectFromWKName(wkName):
- search_out = re.search(u'^\d+:★(.*)★\d+$', wkName)
+ search_out = re.search('^\d+::(.*):\d+$', wkName)
  if search_out:
      return search_out.group(1)
  else:

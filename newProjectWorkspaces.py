@@ -30,7 +30,7 @@ newWorkspaceNums = getValidWorkspaceNums(wkList, len(allOutputs))
 
 commandToRun = ''
 
-wkNameProjectPart = u'★' + projectName + u'★'
+wkNameProjectPart = ':' + projectName + ':'
 
 for i in range(1, len(allOutputs) + 1):
   # 1. find a workspace which is on this output
