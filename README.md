@@ -1,3 +1,5 @@
+***[Demo video showing the capabilities](https://youtu.be/_IU-GckAc5I)***
+
 At my workplace, I have a dual monitor setup, with Ubuntu, and [I3](https://i3wm.org/) as the window manager. Being a tiling window manager, I3 allows me to effectively use all the display space, and arrange the windows quickly in different shapes and sizes.
 
 Typically, I have a browser and a terminal (or multiple terminals) on one monitor, and IDE on another. I also generally have multiple such sets of workspaces. Each such set (one workspace for each monitor) represents a project that I am working on. 
