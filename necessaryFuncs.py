@@ -16,7 +16,7 @@ def getValidWorkspaceNums(wkList, num):
   goodWKNums = list(set(fullWKNums) - set(wkNums))
 
   if num <= len(goodWKNums):
-    return [[goodWKNums][i] for i in range(0, num + 1)]
+    return [goodWKNums[i] for i in range(0, num + 1)]
   else:
     return goodWKNums + range(maxWKNum + 1, maxWKNum + num + 1 - len(goodWKNums))
 
