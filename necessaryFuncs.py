@@ -5,7 +5,6 @@ import sys
 import re
 
 def getValidWorkspaceNums(wkList, num):
-  num = num + 1
   wkNums = getWorkspaceNums(wkList)
 
   if len(wkNums) == 0 :
@@ -16,9 +15,9 @@ def getValidWorkspaceNums(wkList, num):
   goodWKNums = list(set(fullWKNums) - set(wkNums))
 
   if num <= len(goodWKNums):
-    return [goodWKNums[i] for i in range(0, num + 1)]
+    return [goodWKNums[i] for i in range(0, num)]
   else:
-    return goodWKNums + range(maxWKNum + 1, maxWKNum + num + 1 - len(goodWKNums))
+    return goodWKNums + range(maxWKNum + 1, maxWKNum + num - len(goodWKNums))
 
 def getListOfOutputs(wkList):
   outputs_with_duplicates = map(lambda x:x['output'], wkList)
