@@ -17,7 +17,7 @@ def getValidWorkspaceNums(wkList, num):
   if num <= len(goodWKNums):
     return [goodWKNums[i] for i in range(0, num)]
   else:
-    return goodWKNums + range(maxWKNum + 1, maxWKNum + num - len(goodWKNums))
+    return goodWKNums + range(maxWKNum + 1, maxWKNum + 1 + num - len(goodWKNums))
 
 def getListOfOutputs(wkList):
   outputs_with_duplicates = map(lambda x:x['output'], wkList)
