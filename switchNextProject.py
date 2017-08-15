@@ -6,9 +6,8 @@ import sys
 import re
 from necessaryFuncs import *
 
-proc = subprocess.Popen(['i3-msg', '-t', 'get_workspaces'], stdout=subprocess.PIPE)
-proc_out = proc.stdout.read()
-wkList = json.loads(proc_out)
+proc_out = subprocess.check_output(['i3-msg', '-t', 'get_workspaces'])
+wkList = json.loads(proc_out.decode('utf-8'))
 
 focWkName = getFocusedWK(wkList)
 
@@ -35,8 +34,15 @@ visWks = getVisibleWKs(wkList)
 
 wksToMakeVisible = list(set(nxtProjWks) - set(visWks))
 
+focOutput = getOutputForWK(wkList, focWkName)
+focOutputWks = getWorkspacesOnOutput(wkList, focOutput)
+wkToBeFocused = list(set(focOutputWks).intersection(nxtProjWks))[0]
+
 parCommToRun = map(lambda x: 'workspace ' + x, wksToMakeVisible)
+if wksToMakeVisible[-1] != wkToBeFocused:
+    parCommToRun.append('workspace ' + wkToBeFocused)
 
 commandToRun = ["i3-msg", '; '.join(parCommToRun)]
 
 subprocess.call(commandToRun)
+
