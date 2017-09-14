@@ -36,11 +36,11 @@ wksToMakeVisible = list(set(nxtProjWks) - set(visWks))
 
 focOutput = getOutputForWK(wkList, focWkName)
 focOutputWks = getWorkspacesOnOutput(wkList, focOutput)
-wkToBeFocused = list(set(focOutputWks).intersection(nxtProjWks))[0]
+wkToBeFocused = list(set(focOutputWks).intersection(nxtProjWks))
 
 parCommToRun = map(lambda x: 'workspace ' + x, wksToMakeVisible)
-if wksToMakeVisible[-1] != wkToBeFocused:
-    parCommToRun.append('workspace ' + wkToBeFocused)
+if len(wkToBeFocused) > 0 and wksToMakeVisible[-1] != wkToBeFocused[0]:
+    parCommToRun.append('workspace ' + wkToBeFocused[0])
 
 commandToRun = ["i3-msg", '; '.join(parCommToRun)]
 
