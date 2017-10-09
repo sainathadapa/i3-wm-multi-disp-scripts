@@ -1,6 +1,5 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
-# encoding: utf-8
 import subprocess
 import json
 import sys
@@ -15,14 +14,13 @@ else:
  
  projectName = proc.stdout.read()
  
- projectName = projectName.replace('\n', '').replace('\r', '')
+ projectName = projectName.decode('utf-8').replace('\n', '').replace('\r', '')
 
 if (projectName is None) or (len(projectName) == 0):
   sys.exit(0)
 
-proc = subprocess.Popen(['i3-msg', '-t', 'get_workspaces'], stdout=subprocess.PIPE)
-proc_out = proc.stdout.read()
-wkList = json.loads(proc_out)
+proc_out = subprocess.run(['i3-msg', '-t', 'get_workspaces'], stdout=subprocess.PIPE)
+wkList = json.loads(proc_out.stdout.decode('utf-8'))
 
 allOutputs = getListOfOutputs(wkList)
 
@@ -37,13 +35,13 @@ for i in range(1, len(allOutputs) + 1):
   # 2. switch to it if it is already not focused
   # 3. create the new workspace
   currentWKName = str(newWorkspaceNums[i-1]) + ':' + wkNameProjectPart + str(i)
-
+  
   currentOutputWK = getWorkspacesOnOutput(wkList, allOutputs[i-1])[0]
-
+  
   if (i != 1) or (currentOutputWK != getFocusedWK(wkList)) :
     commandToRun = commandToRun + 'workspace ' + currentOutputWK + '; '
-
-  commandToRun = commandToRun.encode('utf-8') + 'workspace ' + currentWKName + '; '
+  
+  commandToRun = commandToRun + 'workspace ' + currentWKName + '; '
 
 commandToRunArray = ['i3-msg', commandToRun]
 

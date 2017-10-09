@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 import subprocess
 import json
@@ -12,14 +12,13 @@ proc = subprocess.Popen(['zenity', '--entry', '--title=I3',
 
 projectName = proc.stdout.read()
 
-projectName = projectName.replace('\n', '').replace('\r', '')
+projectName = projectName.decode('utf-8').replace('\n', '').replace('\r', '')
 
 if (projectName is None) or (len(projectName) == 0):
     sys.exit(0)
 
-proc = subprocess.Popen(['i3-msg', '-t', 'get_workspaces'], stdout=subprocess.PIPE)
-proc_out = proc.stdout.read()
-wkList = json.loads(proc_out)
+proc_out = subprocess.run(['i3-msg', '-t', 'get_workspaces'], stdout=subprocess.PIPE)
+wkList = json.loads(proc_out.stdout.decode('utf-8'))
 
 allWKNames = getWKNames(wkList)
 
@@ -32,12 +31,9 @@ if currentProj is None:
 
 currentProjWKs = getWKNamesFromProj(wkList, currentProj)
 
-newProjWKs = map(lambda x:x.replace(":" + currentProj + ":",
-  ":" + projectName + ":"), currentProjWKs)
+newProjWKs = [x.replace(":" + currentProj + ":", ":" + projectName + ":") for x in currentProjWKs]
 
-parCommand = map(lambda (i,x): 'rename workspace ' +
-        currentProjWKs[i] + ' to ' +
-        newProjWKs[i] + '; ', enumerate(currentProjWKs))
+parCommand = ['rename workspace ' + currentProjWKs[i] + ' to ' + newProjWKs[i] + '; ' for i,x in enumerate(currentProjWKs)]
 
 commandToRun = ['i3-msg', ''.join(parCommand)]
 
