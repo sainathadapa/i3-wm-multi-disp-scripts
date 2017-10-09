@@ -4,6 +4,33 @@ import json
 import sys
 import re
 
+def getWKNames(wkList):
+    return [x['name'] for x in wkList]
+
+def getFocusedWK(wkList):
+  return [x for x in wkList if x['focused'] == True][0]['name']
+
+def getProjectFromWKName(wkName):
+ search_out = re.search('^\d+::(.*):\d+$', wkName)
+ if search_out:
+     return search_out.group(1)
+ else:
+     return None
+
+def getWKNamesFromProj(wkList, projName):
+    wknames = getWKNames(wkList)
+    return [x for x in wknames if getProjectFromWKName(x) == projName]
+
+def getOutputForWK(wkList, wkName):
+    return [x for x in wkList if x['name'] == wkName][0]['output']
+
+def getListOfOutputs(wkList):
+  outputs_with_duplicates = [x['output'] for x in wkList]
+  return list(set(outputs_with_duplicates))
+
+def getWorkspaceNums(wkList):
+  return [x['num'] for x in wkList]
+
 def getValidWorkspaceNums(wkList, num):
   wkNums = getWorkspaceNums(wkList)
 
@@ -19,56 +46,25 @@ def getValidWorkspaceNums(wkList, num):
   else:
     return goodWKNums + range(maxWKNum + 1, maxWKNum + 1 + num - len(goodWKNums))
 
-def getListOfOutputs(wkList):
-  outputs_with_duplicates = map(lambda x:x['output'], wkList)
-  return list(set(outputs_with_duplicates))
-
-def getWKNames(wkList):
-    return map(lambda x:x['name'], wkList)
-
-def getFocusedWK(wkList):
-  return filter(lambda x:x['focused'] == True, wkList)[0]['name']
-
 def getVisibleWKs(wkList):
-  out1 = filter(lambda x:x['visible'] == True, wkList)
-  return map(lambda x:x['name'], out1)
+  return [x['name'] for x in wkList if x['visible']]
 
 def getWorkspacesOnOutput(wkList, outputName):
-  filteredObj = filter(lambda x:x['output'] == outputName, wkList)
-  return map(lambda x:x['name'], filteredObj)
+  return [x['name'] for x in wkList if x['output'] == outputName]
 
 def getListOfProjects(wkList):
   wknames = getWKNames(wkList)
   wknums = getWorkspaceNums(wkList)
 
-  out1 = map(lambda x:getProjectFromWKName(x), wknames)
+  out1 = [getProjectFromWKName(x) for x in wknames]
   out11 = zip(out1, wknums)
-  out2 = filter(lambda x:x[0] != None, out11)
-  listOfProjects = list(set(map(lambda x:x[0], out2)))
+  out2 = [x for x in out11 if x[0] != None]
+  listOfProjects = list(set([x[0] for x in out2]))
 
   def f(x):
-    tmp1 = filter(lambda y:y[0]==x, out2)
-    tmp2 = map(lambda y:y[1], tmp1)
-    return min(tmp2)
+    return min([y[1] for y in out2 if y[0] == x])
   
-  out3 = map(f, listOfProjects)
+  out3 = [f(x) for x in listOfProjects]
   sortedProjects = [x for (y,x) in sorted(zip(out3,listOfProjects))]
 
   return sortedProjects
-
-def getProjectFromWKName(wkName):
- search_out = re.search('^\d+::(.*):\d+$', wkName)
- if search_out:
-     return search_out.group(1)
- else:
-     return None
-
-def getWKNamesFromProj(wkList, projName):
-    wknames = getWKNames(wkList)
-    return filter(lambda x:getProjectFromWKName(x)==projName, wknames)
-
-def getWorkspaceNums(wkList):
-  return map(lambda x:x['num'], wkList)
-
-def getOutputForWK(wkList, wkName):
-    return filter(lambda x:x['name'] == wkName, wkList)[0]['output']

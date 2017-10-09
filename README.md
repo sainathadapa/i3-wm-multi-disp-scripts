@@ -85,15 +85,15 @@ To use the scripts, add these lines to your I3 config:
 
 ``` sh
 # project workflow bindings
-bindsym $mod+Shift+p     exec python2 ~/.3/i3-project-focus-workflow/newProjectWorkspaces.py
-bindsym $mod+p           exec python2 ~/.i3/i3-project-focus-workflow/switchNextProject.py
-bindsym $mod+Tab         exec python2 ~/.i3/i3-project-focus-workflow/cycleProjectWorkspacesFocus.py
-bindsym $mod+Shift+Tab   exec python2 ~/.i3/i3-project-focus-workflow/cycleProjectWorkspacesOutput.py
-bindsym $mod+Control+Tab exec python2 ~/.i3/i3-project-focus-workflow/cycleContainerProjectWorkspaces.py
-bindsym $mod+n           exec python2 ~/.i3/i3-project-focus-workflow/renameProject.py
+bindsym $mod+Shift+p     exec python3~/.3/i3-project-focus-workflow/newProjectWorkspaces.py
+bindsym $mod+p           exec python3~/.i3/i3-project-focus-workflow/switchNextProject.py
+bindsym $mod+Tab         exec python3~/.i3/i3-project-focus-workflow/cycleProjectWorkspacesFocus.py
+bindsym $mod+Shift+Tab   exec python3~/.i3/i3-project-focus-workflow/cycleProjectWorkspacesOutput.py
+bindsym $mod+Control+Tab exec python3~/.i3/i3-project-focus-workflow/cycleContainerProjectWorkspaces.py
+bindsym $mod+n           exec python3~/.i3/i3-project-focus-workflow/renameProject.py
 
 # create a initial project on startup with project name 'default'
-exec --no-startup-id python2 ~/.i3/i3-project-focus-workflow/newProjectWorkspaces.py default
+exec --no-startup-id python3 ~/.i3/i3-project-focus-workflow/newProjectWorkspaces.py default
 ```
 
  

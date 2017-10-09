@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 import subprocess
 import json
@@ -6,9 +6,8 @@ import sys
 import re
 from necessaryFuncs import *
 
-proc = subprocess.Popen(['i3-msg', '-t', 'get_workspaces'], stdout=subprocess.PIPE)
-proc_out = proc.stdout.read()
-wkList = json.loads(proc_out)
+proc_out = subprocess.run(['i3-msg', '-t', 'get_workspaces'], stdout=subprocess.PIPE)
+wkList = json.loads(proc_out.stdout.decode('utf-8'))
 
 allWKNames = getWKNames(wkList)
 
@@ -21,27 +20,27 @@ if (currentProj == None) or (len(currentProj) == 0):
 
 currentProjWKs = getWKNamesFromProj(wkList, currentProj)
 
-currentProjWKOutputs = map(lambda x:getOutputForWK(wkList, x), currentProjWKs)
+currentProjWKOutputs = [getOutputForWK(wkList, x) for x in currentProjWKs]
  
 newOutputPos =  range(1, len(currentProjWKs) + 1)
 
-def temp(x):
+def newOutputPosFn(x):
   if (x == len(currentProjWKOutputs)):
     x = 0
   return x
 
-newOutputPos = map(temp, newOutputPos)
+newOutputPos = [newOutputPosFn(x) for x in newOutputPos]
 
-newOutputs = map(lambda i:currentProjWKOutputs[i], newOutputPos)
+newOutputs = [currentProjWKOutputs[i] for i in newOutputPos]
 
-def temp2(i, x):
+def mk_cmd(i, x):
   ans = ''
   if (i != 0) or (currentProjWKs[i] != getFocusedWK(wkList)):
     ans = ans + 'workspace ' + currentProjWKs[i] + '; '
   ans = ans + 'move workspace to output ' + newOutputs[i] + '; '
   return ans
 
-parCommToRun = map(lambda (i,x):temp2(i,x), enumerate(currentProjWKs))
+parCommToRun = [mk_cmd(i,x) for i,x in enumerate(currentProjWKs)]
 
 commandToRun = ["i3-msg", ''.join(parCommToRun)]
 
