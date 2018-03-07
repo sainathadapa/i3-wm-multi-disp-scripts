@@ -3,26 +3,25 @@
 import subprocess
 import json
 import sys
-import re
-from necessaryFuncs import *
+import necessaryFuncs as nf
 
 proc_out = subprocess.run(['i3-msg', '-t', 'get_workspaces'], stdout=subprocess.PIPE)
 wkList = json.loads(proc_out.stdout.decode('utf-8'))
 
-allWKNames = getWKNames(wkList)
+allWKNames = nf.getWKNames(wkList)
 
-currentWK = getFocusedWK(wkList)
+currentWK = nf.getFocusedWK(wkList)
 
-currentProj = getProjectFromWKName(currentWK)
+currentProj = nf.getProjectFromWKName(currentWK)
 
 if currentProj is None:
     sys.exit(0)
 
-currentProjWKs = getWKNamesFromProj(wkList, currentProj)
+currentProjWKs = nf.getWKNamesFromProj(wkList, currentProj)
 
 if len(currentProjWKs) == 1:
     sys.exit(0)
-  
+
 thisWKPos = currentProjWKs.index(currentWK)
 
 newWKPos = thisWKPos + 1
