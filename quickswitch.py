@@ -8,7 +8,6 @@ import necessaryFuncs as nf
 
 
 def create_tree(root_json, root_node):
-
     con_name = root_json['name']
 
     if con_name is None:
@@ -17,7 +16,14 @@ def create_tree(root_json, root_node):
     if con_name in ['__i3', 'topdock', 'bottomdock']:
         return None
     else:
-        this_node = at.AnyNode(id=con_name, parent=root_node, con_id=root_json['id'])
+        this_node = at.AnyNode(id=con_name,
+                               parent=root_node,
+                               con_id=root_json['id'],
+                               workspace=False,
+                               container=False)
+
+    if con_name == 'container':
+        this_node.container = True
 
     for a_node in root_json['nodes']:
         create_tree(a_node, this_node)
@@ -49,34 +55,39 @@ i3tree = json.loads(proc_out.stdout.decode('utf-8'))
 root = at.AnyNode(id='r')
 create_tree(i3tree, root)
 root = root.children[0]
-# print(at.RenderTree(root, style=at.AsciiStyle()))
 
-# Displays
-displays = [x.id for x in root.children]
-
-# Workspaces
-workspaces = [wk
-              for display in root.children
-              for wk in display.children[0].children]
-wknames = [x.id for x in workspaces]
-workspaces = [wk.children[0] for wk in workspaces]
-for x, y in zip(wknames, workspaces):
-    y.id = x
+# Identify the workspaces
+for display in root.children:
+    for wk in display.children[0].children:
+        wk.workspace = True
 
 # Get the current workspace
 proc_out = subprocess.run(['i3-msg', '-t', 'get_workspaces'], stdout=subprocess.PIPE)
 wkList = json.loads(proc_out.stdout.decode('utf-8'))
 focWkName = nf.getFocusedWK(wkList)
 
-# Build the final tree
-workspaces = [x for x, y in zip(workspaces, wknames) if y != focWkName]
-root = at.AnyNode(id='root', con_id=root.con_id)
-for a_wk in workspaces:
-    a_wk.parent = root
-# print(at.RenderTree(root, style=at.AsciiStyle()))
+# Change the tree such that the workspaces are children to the root
+# while ignoring the current workspace
+root.children = [node
+                 for node in at.PostOrderIter(root, filter_=lambda x: x.workspace)
+                 if node.id != focWkName]
+
+# If workspace contains only one container, then remove that container
+print(at.RenderTree(root, style=at.AsciiStyle()))
+for node in at.PostOrderIter(root, filter_=lambda x: x.workspace):
+    if len(node.children) == 1:
+        node.children = node.children[0].children
+
+# If containers have only one element, then remove such containers
+for node in at.PreOrderIter(root, filter_=lambda x: x.container):
+    if len(node.children) == 1:
+        node.children[0].parent = node.parent
+        node.parent = None
+print(at.RenderTree(root, style=at.AsciiStyle()))
 
 # Create names for containers
-[fix_container_names(node) for node in at.PostOrderIter(root)]
+for node in at.PreOrderIter(root, filter_=lambda x: x.container):
+    fix_container_names(node)
 
 # Create new names for nodes for diplay in Rofi
 names_id_map = [[x+y.id, y.con_id] for x, _, y in at.RenderTree(root)]
