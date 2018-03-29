@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 import json
 import subprocess
@@ -73,7 +72,6 @@ root.children = [node
                  if node.id != focWkName]
 
 # If workspace contains only one container, then remove that container
-print(at.RenderTree(root, style=at.AsciiStyle()))
 for node in at.PostOrderIter(root, filter_=lambda x: x.workspace):
     if len(node.children) == 1:
         node.children = node.children[0].children
@@ -83,7 +81,6 @@ for node in at.PreOrderIter(root, filter_=lambda x: x.container):
     if len(node.children) == 1:
         node.children[0].parent = node.parent
         node.parent = None
-print(at.RenderTree(root, style=at.AsciiStyle()))
 
 # Create names for containers
 for node in at.PreOrderIter(root, filter_=lambda x: x.container):
