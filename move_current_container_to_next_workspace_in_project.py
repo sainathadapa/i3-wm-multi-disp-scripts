@@ -18,6 +18,9 @@ if currentProj is None:
 
 currentProjWKs = nf.getWKNamesFromProj(wkList, currentProj)
 
+if len(currentProjWKs) < 2:
+    sys.exit(1)
+
 thisWKPos = currentProjWKs.index(currentWK)
 
 newWKPos = thisWKPos + 1
