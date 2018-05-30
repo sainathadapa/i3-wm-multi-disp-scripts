@@ -19,7 +19,14 @@ if (projectName is None) or (len(projectName) == 0):
 proc_out = subprocess.run(['i3-msg', '-t', 'get_workspaces'], stdout=subprocess.PIPE)
 wkList = json.loads(proc_out.stdout.decode('utf-8'))
 
+for one_wk in wkList:
+    one_wk['project'] = nf.getProjectFromWKName(one_wk['name'])
+
 allOutputs = nf.getListOfOutputs(wkList)
+# Outputs where this project is already present
+outputs_to_remove = [x['output'] for x in wkList if x['project'] == projectName]
+# Remaining outputs
+allOutputs = list(set(allOutputs).difference(set(outputs_to_remove)))
 
 newWorkspaceNums = nf.getValidWorkspaceNums(wkList, len(allOutputs))
 
