@@ -25,16 +25,17 @@ Three commands is an inefficient way to do such a simple & regular task. So, I w
 # How to install
 1. Install `zenity`, in case if it is not present. This utility is present on most gnome based linux systems. 
 2. Download the scripts individually or clone the repo
-3. Bind the scripts to shortcut keys in the I3 config file
+3. Install the python dependencies as specified in [requirements.txt](requirements.txt)
+4. Bind the scripts to shortcut keys in the I3 config file
 
 # Terminology
 A project is defined as a set of workspaces, one workspace for each display/monitor available.
 
 # Usage
 
-## newProjectWorkspaces.py
+## [create_new_project.py](create_new_project.py)
 
-To create a new project, run the `newProjectWorkspaces.py` script. This will display a dialog box asking for the project name. Names of the workspaces will contain the project name.
+To create a new project, run the `create_new_project.py` script. This will display a dialog box asking for the project name. Names of the workspaces will contain the project name.
 
 Dialog box:
 ![New project dialog box](img/new_project_dialog.png)
@@ -42,9 +43,9 @@ Dialog box:
 After:
 ![New set of workspaces](img/new_project_after.png)
 
-## renameProject.py
+## [rename_project.py](rename_project.py)
 
-To rename a project, run `renameProject.py`. This will display a dialog box asking for the new project name.
+To rename a project, run `rename_project.py`. This will display a dialog box asking for the new project name.
 
 Dialog box:
 ![Rename project dialog box](img/rename_project_dialog.png)
@@ -52,17 +53,17 @@ Dialog box:
 After:
 ![After rename](img/rename_project_after.png)
 
-## switchNextProject.py
+## [switch_to_next_project.py](switch_to_next_project.py)
 
 To switch to the next project, run `switchNextProject.py`
 
-## cycleProjectWorkspacesFocus.py
+## [switch_to_next_wk_in_project.py](switch_to_next_wk_in_project.py)
 
-To cycle the focus between the workspaces in a project, run `cycleProjectWorkspacesFocus.py`
+To cycle the focus between the workspaces in a project, run `switch_to_next_wk_in_project.py`
 
-## cycleProjectWorkspacesOutput.py
+## [move_workspaces_in_project_to_next_output.py](move_workspaces_in_project_to_next_output.py)
 
-To shift all the workspaces in a project to each one's respective next display, run `cycleProjectWorkspacesOutput.py`. For example, if the initial state of the workspaces is {Wksp 1 - Disp 1}, {Wksp 2 - Disp 2}, {Wksp 3 - Disp 3}, after running the script, the final state will be {Wksp 1 - Disp 2}, {Wksp 2 - Disp 3}, {Wksp 3 - Disp 1}.
+To shift all the workspaces in a project to each one's respective next display, run `move_workspaces_in_project_to_next_output.py`. For example, if the initial state of the workspaces is {Wksp 1 - Disp 1}, {Wksp 2 - Disp 2}, {Wksp 3 - Disp 3}, after running the script, the final state will be {Wksp 1 - Disp 2}, {Wksp 2 - Disp 3}, {Wksp 3 - Disp 1}.
 
 Initial state:
 ![Initial state](img/initial_state.png)
@@ -70,9 +71,9 @@ Initial state:
 After running the script:
 ![After workspace switch](img/after_cycle_workspace_display.png)
 
-## cycleContainerProjectWorkspaces.py
+## [move_current_container_to_next_workspace_in_project.py](move_current_container_to_next_workspace_in_project.py)
 
-To switch the focused container to the next workspace in the project, run `cycleContainerProjectWorkspaces.py`.
+To switch the focused container to the next workspace in the project, run `move_current_container_to_next_workspace_in_project.py`.
 
 Initial state:
 ![Initial state](img/initial_state.png)
@@ -84,16 +85,19 @@ After running the script:
 To use the scripts, add these lines to your I3 config:
 
 ``` sh
+set $i3multipath ~/.i3/i3_wm_multi_disp_scripts
+
 # project workflow bindings
-bindsym $mod+Shift+p     exec python3~/.3/i3-project-focus-workflow/newProjectWorkspaces.py
-bindsym $mod+p           exec python3~/.i3/i3-project-focus-workflow/switchNextProject.py
-bindsym $mod+Tab         exec python3~/.i3/i3-project-focus-workflow/cycleProjectWorkspacesFocus.py
-bindsym $mod+Shift+Tab   exec python3~/.i3/i3-project-focus-workflow/cycleProjectWorkspacesOutput.py
-bindsym $mod+Control+Tab exec python3~/.i3/i3-project-focus-workflow/cycleContainerProjectWorkspaces.py
-bindsym $mod+n           exec python3~/.i3/i3-project-focus-workflow/renameProject.py
+bindsym $mod+Shift+p         exec $i3multipath/.env/bin/python $i3multipath/create_new_project.py
+bindsym $mod+p               exec $i3multipath/.env/bin/python $i3multipath/switch_to_next_project.py
+bindsym $mod+Shift+Tab       exec $i3multipath/.env/bin/python $i3multipath/move_workspaces_in_project_to_next_output.py
+bindsym $mod+Control+Tab     exec $i3multipath/.env/bin/python $i3multipath/move_current_container_to_next_workspace_in_project.py
+bindsym $mod+o               exec $i3multipath/.env/bin/python $i3multipath/rename_project.py
+bindsym F8                   exec $i3multipath/.env/bin/python $i3multipath/bring_container_to_current_workspace.py
+bindsym $mod+Tab             exec $i3multipath/switcher.sh
 
 # create a initial project on startup with project name 'default'
-exec --no-startup-id python3 ~/.i3/i3-project-focus-workflow/newProjectWorkspaces.py default
+exec --no-startup-id $i3multipath/.env/bin/python $i3multipath/create_new_project.py default
 ```
 
  
